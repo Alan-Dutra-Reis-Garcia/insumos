@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Lista de Compras</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #f9f9f9;
+      color: #333;
+      margin: 0;
+      padding: 2rem;
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 2rem;
+      color: #2c3e50;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: #fff;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    th, td {
+      padding: 1rem;
+      text-align: center;
+      border-bottom: 1px solid #eee;
+    }
+
+    th {
+      background-color: #3498db;
+      color: white;
+    }
+
+    tr:last-child td {
+      border-bottom: none;
+    }
+
+    input {
+      width: 80px;
+      padding: 4px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      text-align: right;
+    }
+
+    .total {
+      font-weight: bold;
+      background-color: #ecf0f1;
+    }
+
+    .summary {
+      margin-top: 1.5rem;
+      font-size: 1.2rem;
+      background: #e8f8f5;
+      padding: 1rem;
+      border-radius: 8px;
+      display: inline-block;
+    }
+
+    a {
+      color: #2980b9;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    label {
+      font-weight: bold;
+      margin-top: 1rem;
+      display: inline-block;
+    }
+  </style>
+</head>
+<body>
+  <h2>Lista de Compras</h2>
+  <table id="tabela-itens">
+    <thead>
+      <tr>
+        <th>Item</th>
+        <th>Preço (R$)</th>
+        <th>Qtde</th>
+        <th>Total (R$)</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a href="https://produto.mercadolivre.com.br/MLB-2207362620-fita-foil-hot-stamping-para-clich-carimbo-_JM?searchVariation=175449244774&highlight=false&headerTopBrand=false#polycard_client=search-nordic&searchVariation=175449244774&position=3&search_layout=grid&type=item&tracking_id=fd3e3ff9-faa6-4e68-a5b0-f0dab2f759c1" target="_blank">Fita Hot</a></td>
+        <td><input type="number" value="31.94" step="0.01" onchange="atualizar()"></td>
+        <td><input type="number" value="2" onchange="atualizar()"></td>
+        <td class="total-item">63.88</td>
+      </tr>
+      <tr>
+        <td><a href="https://produto.mercadolivre.com.br/MLB-1713446606-caneta-borda-facil-tinta-borda-italiana-para-couro-100ml-_JM?searchVariation=67844673411&highlight=false&headerTopBrand=false#polycard_client=search-nordic&searchVariation=67844673411&position=11&search_layout=grid&type=item&tracking_id=93b855ef-28a0-479b-b1fc-d5c3beb92a25" target="_blank">Aplicador</a></td>
+        <td><input type="number" value="104.51" step="0.01" onchange="atualizar()"></td>
+        <td><input type="number" value="1" onchange="atualizar()"></td>
+        <td class="total-item">104.51</td>
+      </tr>
+      <tr>
+        <td><a href="https://produto.mercadolivre.com.br/MLB-5079500502-borda-italiana-novax-90ml-borda-de-bolsas-carteiras-cintos-_JM?searchVariation=181762817096&highlight=false&headerTopBrand=false#polycard_client=search-nordic&searchVariation=181762817096&backend_model=search-backend&position=8&search_layout=grid&type=item&tracking_id=f0f64193-d266-4c06-b192-59e5a495fb69" target="_blank">Borda Italiana</a></td>
+        <td><input type="number" value="33.5" step="0.01" onchange="atualizar()"></td>
+        <td><input type="number" value="3" onchange="atualizar()"></td>
+        <td class="total-item">100.50</td>
+      </tr>
+      <tr>
+        <td><a href="https://produto.mercadolivre.com.br/MLB-1629925421-couro-atanado-vaqueta-atanadinho-12mm-16mm-20mm-50x25cm-_JM?attributes=FABRIC_DESIGN%3ATGlzbw%3D%3D%2CCOLOR_SECONDARY_COLOR%3AUHJldG8gMS40LzEuNm1t&searchVariation=174140170824&quantity=1" target="_blank">Couro</a></td>
+        <td><input type="number" value="59.99" step="0.01" onchange="atualizar()"></td>
+        <td><input type="number" value="2" onchange="atualizar()"></td>
+        <td class="total-item">119.98</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="summary">
+    <div><strong>Total Geral:</strong> R$ <span id="total-geral">388.87</span></div>
+    <br>
+    <label>Dividir entre: <input type="number" id="divisao" value="2" min="1" onchange="atualizar()"> pessoas</label>
+    <div><strong>Valor por Pessoa:</strong> R$ <span id="valor-individual">194.44</span></div>
+  </div>
+
+  <script>
+    function atualizar() {
+      const tabela = document.querySelector("#tabela-itens tbody");
+      let totalGeral = 0;
+      tabela.querySelectorAll("tr").forEach(linha => {
+        const preco = parseFloat(linha.cells[1].querySelector("input").value) || 0;
+        const qtde = parseFloat(linha.cells[2].querySelector("input").value) || 0;
+        const total = preco * qtde;
+        linha.cells[3].textContent = total.toFixed(2);
+        totalGeral += total;
+      });
+      document.getElementById("total-geral").textContent = totalGeral.toFixed(2);
+      const pessoas = parseInt(document.getElementById("divisao").value) || 1;
+      document.getElementById("valor-individual").textContent = (totalGeral / pessoas).toFixed(2);
+    }
+
+    // Atualiza valores na carga inicial
+    window.onload = atualizar;
+  </script>
+</body>
+</html>
